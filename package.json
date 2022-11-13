@@ -1,0 +1,19 @@
+{
+  "name": "demo_analysis_of_thai_fake_news",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BrightBct/demo_analysis_of_thai_fake_news.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BrightBct/demo_analysis_of_thai_fake_news/issues"
+  },
+  "homepage": "https://github.com/BrightBct/demo_analysis_of_thai_fake_news#readme"
+}
