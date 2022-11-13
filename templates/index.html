@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="th">
+    <head>
+        <meta charset="UTF-8">
+        <title> Home </title>
+        <link rel="stylesheet" href="{{ url_for ('static', filename='css/style.css') }}" >
+    </head>
+    <body>
+        <div class="center-screen">
+            <form action="http://localhost:5000/results" method="post">
+                <h1>การวิเคราะห์ข่าวปลอมในข่าวภาษาไทย</h1>
+                <!-- <p><input class="input-box" type="text" name="head_news"></p> -->
+                <p><textarea class="input-box" name="head_news" rows="4" cols="50" placeholder="พิมพ์หัวข้อข่าวที่ต้องการตรวจสอบ" required></textarea></p>
+                <p><input class="submit-box submit-box1" type="submit" value="ตรวจสอบ"></p>
+            </form>
+        </div>
+    </body>
+</html>

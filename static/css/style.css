@@ -1,0 +1,80 @@
+.input-box {
+    width: 50%;
+    height: 200px;
+    font-size: 14pt;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    box-sizing: border-box;
+    line-height: 1.5em;
+    border-radius: 8px;
+    background-color: whitesmoke;
+
+    /* border: 2px solid red;
+    border-radius: 4px; */
+}
+
+.submit-box {
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+
+    font-size: 14pt;
+    border-radius: 8px;
+    padding: 16px 32px;
+
+    cursor: pointer;
+}
+
+.submit-box1 {
+    background-color: white; 
+    color: black; 
+    border: 2px solid white;
+}
+
+.submit-box1:hover {
+    background-color: #4CAF50;
+    color: white;
+    border: 2px solid #4CAF50;
+}
+
+.center-screen {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    /* border: 2px solid red;
+    border-radius: 4px; */
+}
+
+body {
+    background-color: #778899;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 1em;
+    overflow: hidden;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+td {
+    text-align: center;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: whitesmoke;
+}
+
+tr:nth-child(odd) {
+    background-color: Gainsboro;
+}
+
+.table-width1 {
+    width:60%;
+}
