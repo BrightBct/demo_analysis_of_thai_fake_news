@@ -22,7 +22,7 @@
                     <td>{{ head_news_false_news_words }}</td>
                 </tr>
                 <tr>
-                    <td>ความน่าจะเป็นของคำศัพท์<br>ที่ส่งผลให้เป็นข่าวปลอม</td>
+                    <td>ความน่าจะเป็นของแต่ละคำศัพท์<br>ที่ส่งผลให้เป็นข่าวปลอม</td>
                     <td>
                         {% for prob in text_print %}
                             {{ prob }}<br>
@@ -32,6 +32,10 @@
                 <tr>
                     <td>ผลลัพธ์การตรวจสอบ</td>
                     <td>{{ head_news_predict[0] }}</td>
+                </tr>
+                <tr>
+                    <td>ความน่าจะเป็นที่ได้ในการตรวจสอบ</td>
+                    <td>{{ head_news_predict_proba }}</td>
                 </tr>
             </table>
             <form action="http://localhost:5000/">
