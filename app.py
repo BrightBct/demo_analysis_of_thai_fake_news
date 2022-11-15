@@ -56,17 +56,16 @@ def results():
 
         head_news_predict = fn.predict(x=[head_news_split])
 
+        head_news_predict_proba = fn.predict_proba(x=[head_news_split])
+
         return render_template('results.html', \
             head_news=head_news, \
             head_news_split=head_news_split, \
             head_news_false_news_words=head_news_false_news_words, \
             text_print=text_print, \
-            head_news_predict=head_news_predict
+            head_news_predict=head_news_predict, \
+            head_news_predict_proba=round(max(head_news_predict_proba[0]), 2) 
             )
 
-# @app.route('/about')
-# def about():
-#     return render_template('about.html')
-
 if __name__ == '__main__':
-    app.run(debug = True)
+    app.run(debug = False)
