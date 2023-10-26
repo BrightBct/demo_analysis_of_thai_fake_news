@@ -4,36 +4,15 @@ import os
 import random
 import re
 
-import matplotlib.pyplot as plt
 import numpy as np
 import pythainlp.corpus
 import pythainlp.tag
 import pythainlp.util
-from wordcloud import WordCloud
 
 random.seed(1)
 
 
 def remove_special_character(text_array: np.ndarray) -> list:
-    
-    """
-    Remove special characters from a text array. 
-    
-    Parameters
-    ----------
-    text_array : ndarray
-        The text array to be removed.
-    
-    Returns
-    -------
-    array : list
-        The removed text list.
-        
-    Notes
-    -----
-    This function removes all special characters from the text array.
-    """
-    
     pattern = re.compile(r"[^\u0E00-\u0E7Fa-zA-Z' ]|^'|'$|''")
     array = []
     
@@ -45,26 +24,7 @@ def remove_special_character(text_array: np.ndarray) -> list:
     return array
 
 
-def remove_excess_spaces(text_array: np.ndarray) -> np.ndarray:
-    
-    """
-    Remove all spaces from the text array.
-    
-    Parameters
-    ----------
-    text_array : ndarray
-        The text array to be removed.
-        
-    Returns
-    -------
-    array : ndarray
-        The removed text array.
-        
-    Notes
-    -----
-    This function removes all spaces from the text array
-    """
-            
+def remove_excess_spaces(text_array: np.ndarray) -> np.ndarray: 
     emoji_pattern = re.compile(pattern="[" u"\U0001F600-\U0001F64F" "]+", flags=re.UNICODE)
     array = []
     for row in range(len(text_array)):
@@ -73,76 +33,13 @@ def remove_excess_spaces(text_array: np.ndarray) -> np.ndarray:
             text_remove_emoji = emoji_pattern.sub(r'', text_array[row][col])
             sub_array.append(' '.join(text_remove_emoji.split()))
         array.append(sub_array)
-        
     return np.array(array, dtype=object)
 
 
 def split_text(text: str, method='pythainlp') -> list:
-
-    """
-    Split a text (text array) into words
-    
-    Parameters
-    ----------
-    text : str
-        The text to be split.
-    method : str
-        Type of Method to split text (default: 'pythainlp)
-        * *pythainlp* - Use pythainlp module to split text array
-        * *deepcut* - Use deepcut module to split text array
-        * *thai_tokenizer* - Use thai_tokenizer module to split text array
-
-    Returns
-    -------
-    ndarray
-        The split text array.
-    
-    Notes
-    -----
-    This function splits a text array into words by using the pythainlp module.
-    """
-
-    return_text = None
-    
-    if method == 'pythainlp':
-        
-        return_text = pythainlp.word_tokenize(text, engine='newmm', keep_whitespace=False)
-        
-    elif method == 'deepcut':
-        
-        import deepcut
-        
-        return_text = [word for word in deepcut.tokenize(text) if word != ' ']
-        
-    elif method == 'thai_tokenizer':
-        
-        from thai_tokenizer import Tokenizer
-        
-        tokenizer = Tokenizer()
-        return_text = [word for word in tokenizer.split(text) if word != ' ']
-
-    return np.array(return_text, dtype=object)
+    return np.array(pythainlp.word_tokenize(text, engine='newmm', keep_whitespace=False), dtype=object)
 
 def remove_stop_words(text_array: np.ndarray) -> list:
-    
-    """
-    Remove stop words from a text array.
-    
-    Parameters
-    ----------
-    text_array : ndarray
-        The text array to be removed.
-    
-    Returns
-    -------
-    array : list
-        The removed text list.
-    
-    Notes
-    -----
-    This function removes all stop words from text array.
-    """
-    
     array = []
     
     for text in text_array:
@@ -154,181 +51,9 @@ def remove_stop_words(text_array: np.ndarray) -> list:
     return np.array(array, dtype=object)
 
 
-def part_of_speech_tagging(text_array: np.ndarray, corpus='pud'):
-    
-    """
-    Marks words from a text array as part of speech tagging.
-    
-    Parameters
-    ----------
-    text_array : ndarray
-        The text array to be marked as part of speech tagging.
-    corpus : str
-        The name of the corpus. (default: 'pud')
-        * *lst20* - `LST20 <https://aiforthai.in.th/corpus.php>`_ corpus \
-            by National Electronics and Computer Technology Center, Thailand
-        * *lst20_ud* - LST20 text, with tags mapped to Universal POS tag \
-            from `Universal Dependencies <https://universaldependencies.org/>`
-        * *orchid* - `ORCHID \
-            <https://www.academia.edu/9127599/Thai_Treebank>`_ corpus, \
-            text from Thai academic articles (default)
-        * *orchid_ud* - ORCHID text, with tags mapped to Universal POS tags
-        * *pud* - `Parallel Universal Dependencies (PUD)\
-            <https://github.com/UniversalDependencies/UD_Thai-PUD>`_ \
-            treebanks, natively use Universal POS tags
-        * *tnc* - Thai National Corpus (support tltk engine only)
-    
-    Returns
-    -------
-    ndarray
-        The modified text array.
-    
-    Notes
-    -----
-    This function marked all words from a text array as part of speech tagging using the pythainlp module.
-    
-    """
-    
-    return [pythainlp.tag.pos_tag(text, corpus=corpus) for text in text_array]
-
-
-def sentiment(text_array: np.ndarray):
-    
-    """
-    Marks words from a text array as sentiment.
-    
-    Parameters
-    ----------
-    text_array : ndarray
-        The text array to be marked as sentiment.
-    
-    Returns
-    -------
-    ndarray
-        The modified text array.    
-    
-    Notes
-    -----
-    This function marked all words from a text array as sentiment using the thai_sentiment module.
-    
-    """
-    from thai_sentiment import get_sentiment
-    return [[text, get_sentiment(text)[0]] for text in text_array]
-
-
-def create_word_cloud(data: dict, name='wordcloud_result', file_type='png', dpi=1080):
-    
-    """
-    Creates a word cloud from a list of words.
-    
-    Parameters
-    ----------
-    data : dict
-    
-    Notes
-    -----
-    This function creates a word cloud from a list of words (data) using the WordCloud module.
-    
-    """
-    
-    word_cloud = WordCloud(width=800, height=800, font_path='Font_Thai\\THSarabun.ttf', background_color='white')
-    word_cloud.generate_from_frequencies(data)
-    plt.figure(figsize=(8, 8), facecolor=None)
-    plt.imshow(word_cloud, interpolation='bilinear')
-    plt.axis("off")
-    plt.savefig('Image_Output/' + name + '.' + file_type, dpi=dpi)
-    plt.show()
-
-
 class ThFN:
     
-    """
-    Analyusis of Thai Fake News using Probabilistic Model (Naive Bayes)
     
-    Attributes
-    ----------
-    _method : string
-        The name of the method to be used.
-    _vocabulary : list
-        A list of words.
-    _count_of_word : int
-        The number of times each word is assigned to a word.
-    _dict_of_word : dict
-        A dictionary of words.
-    _vector : list
-        A list of vectors.
-    _prob_dict_of_word : dict[Any, list] 
-        A probability of each word from dictionary.
-    _list_of_true_news_word : list
-        A list of true news words.
-    _list_of_false_news_word : list
-        A list of false news words.
-    _n_news : int
-        The number of news.
-    _n_true_news : int
-        The number of true news.
-    _n_false_news : int
-        The number of false news.
-    _n_news_words : int
-        The number of words in the news.
-    _n_true_news_words : int
-        The number of words in the true news.
-    _n_false_news_words : int
-        The number of words in the false news.
-    _dictionary_news_true : dict[int, Literal[0]]
-        A dictionary of true news words.
-    _dictionary_news_false : dict[int, Literal[0]]
-        A dictionary of false news words.
-    _prob_news_true : float
-        The probability of the true news.
-    _prob_news_false : float
-        The probability of the false news.
-    
-    Methods
-    -------
-    _fit_vocab(self, data)
-        fit vocabulary
-    _vocab_transform(self, data)
-        transform vocabulary
-    _save_vocab(self)
-        save vocabulary
-    _load_vocab(self)
-        load vocabulary
-    fit(self, x, y, save_model=True)
-        fit data into naive bayes model
-    predict(self, x)
-        predict data using naive bayes model
-    predict_plus_unknown(self, x)
-        predict data using naive bayes model and add 'unknown' labels
-    _save_model(self)
-        save model
-    _load_model(self)
-        load model
-    sentences_probability(self, x)
-        find the probability of the sentence being true and fake news
-    words_in_sentence_probability(self, x)
-        find the probability that the words in the sentence are true and fake news
-    words_in_news_probability(self, x)
-        find the probability that the words in the news are true and fake news
-    words_plus_unknown_in_sentences(self, x)
-        find words whose probability does not range from 0.4 to 0.6
-    _calculate_etc(self)
-        calculate 
-    _probability(self, raw_data)
- 
-    get_vocab_transform(self, x)
- 
-    get_count_of_words(self, data)
- 
-    get_true_news_word(self)
-    
-    get_false_news_word(self)
-    
-    get_vocab(self)
-    
-    
-    """
-
     def __init__(self, method: str, \
         true_pre='ข่าวจริง', false_pre='ข่าวปลอม', unknown_pre='ข่าวที่ยังระบุไม่ได้', \
         save_vocab=False, load_vocab=False, \
